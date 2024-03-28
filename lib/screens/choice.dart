@@ -10,23 +10,28 @@ class ChoiceScreen extends StatefulWidget {
 class _ChoiceScreenState extends State<ChoiceScreen> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/home');
-            },
-            child: Text('Consumer'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/admin');
-            },
-            child: Text('Admin'),
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Choose User Type'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/home');
+              },
+              child: Text('Consumer'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/admin');
+              },
+              child: Text('Admin'),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -4,7 +4,9 @@ import 'package:electric/screens/choice.dart';
 import 'package:electric/screens/entryPoint.dart';
 import 'package:electric/screens/homeScreen.dart';
 import 'package:electric/screens/loginScreen.dart';
+import 'package:electric/screens/newUser.dart';
 import 'package:electric/screens/testScree.dart';
+import 'package:electric/screens/usersData.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,8 +16,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token =  prefs.getString('jwt');
+  String? userType = prefs.getString('userType');
   String initialRoute =
       token != null && !JwtDecoder.isExpired(token) ? '/home' : '/';
+  initialRoute = userType == 'admin' ? '/choice' : initialRoute;
   print("the initial route is : ");
   print(initialRoute);
   print(token);
@@ -64,9 +68,9 @@ class _MyAppState extends State<MyApp> {
             '/login': (context) => const LoginScreen(),
             '/choice': (context) => const ChoiceScreen(),
             '/home': (context) => const HomeScreen(),
-            '/admin': (context) => const AdminScreen(),
-            // '/register': (context) => const RegistrationScreen(),
-            // '/admin': (context) => const AdminScreen(),
+            '/admin': (context) =>  AdminScreen(),
+            '/admin/new': (context) => const AddUserScreen(), 
+            '/admin/bill/:id': (context) => DataScreen(),
             // '/profile': (context) => const ProfileScreen(),
           },
           // home: const LoginScreen(),

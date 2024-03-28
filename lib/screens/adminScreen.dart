@@ -1,11 +1,12 @@
 import "dart:convert";
 
+import "package:electric/widgets/houseCard.dart";
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
 import "package:shared_preferences/shared_preferences.dart";
 
 class AdminScreen extends StatefulWidget {
-  const AdminScreen({super.key});
+   AdminScreen({super.key});
 
   @override
   State<AdminScreen> createState() => _AdminScreenState();
@@ -51,16 +52,29 @@ class _AdminScreenState extends State<AdminScreen> {
         itemCount: userData.length,
         itemBuilder: (context, index) {
           Map<String, dynamic> user = userData[index];
-          return ListTile(
-            title: Text(user['email']),
-            subtitle: Text('House Number: ${user['houseNumber']}'),
-            trailing: Text('User Type: ${user['userType']}'),
+          return HouseCard(
+            indexNumber: index,
+            houseNumber: user['houseNumber'],
+            email: user['email'],
+            userId: user['_id'],
           );
         },
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+
+          // route to '/admin/new'
+          Navigator.pushNamed(context, '/admin/new');
+        },
+        label: Text(
+          'Add New User',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
-
-
-
