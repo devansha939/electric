@@ -12,6 +12,7 @@ class DataScreen extends StatefulWidget {
 class _DataScreenState extends State<DataScreen> {
   String userId = '';
   dynamic userData;
+  
   @override
   void initState() {
     super.initState();
@@ -21,9 +22,7 @@ class _DataScreenState extends State<DataScreen> {
   void fetchData() async {
     userId = ModalRoute.of(context)?.settings.arguments as String;
     userData = await getUserData(userId);
-    print("the user id is: ");
-    print(userId);
-    print(userData);
+    setState(() {}); // Trigger a rebuild after fetching data
   }
 
   @override
@@ -34,13 +33,16 @@ class _DataScreenState extends State<DataScreen> {
           title: const Text('User Data'),
         ),
         body: Center(
-            child: ListView.builder(
-          itemCount: userData['data'].length,
-          itemBuilder: (context, index) {
-            return billCardAdmin(
-                jsonData: Map<String, dynamic>.from(userData['data'][index]));
-          },
-        )),
+          child: userData == null
+              ? Text('No data', style: TextStyle(fontSize: 20))
+              : ListView.builder(
+                  itemCount: userData['data'].length,
+                  itemBuilder: (context, index) {
+                    return billCardAdmin(
+                        jsonData: Map<String, dynamic>.from(userData['data'][index]));
+                  },
+                ),
+        ),
       ),
     );
   }

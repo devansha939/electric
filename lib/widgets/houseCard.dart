@@ -49,14 +49,14 @@ class _HouseCardState extends State<HouseCard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      ElevatedButton(
-                          onPressed: () async {
-                            print(widget.userId);
-                            Map<String, dynamic> userData =
-                                await getUserData(widget.userId);
-                            print(userData);
-                          },
-                          child: Text('Test')),
+                      // ElevatedButton(
+                      //     onPressed: () async {
+                      //       print(widget.userId);
+                      //       Map<String, dynamic> userData =
+                      //           await getUserData(widget.userId);
+                      //       print(userData);
+                      //     },
+                      //     child: Text('Test')),
                       ElevatedButton.icon(
                         onPressed: () {
                           // On pressed route it to '/User/bills
