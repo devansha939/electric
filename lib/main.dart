@@ -1,4 +1,6 @@
 import 'package:electric/providers/userProvider.dart';
+import 'package:electric/screens/adminScreen.dart';
+import 'package:electric/screens/choice.dart';
 import 'package:electric/screens/entryPoint.dart';
 import 'package:electric/screens/homeScreen.dart';
 import 'package:electric/screens/loginScreen.dart';
@@ -11,9 +13,12 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? token = prefs.getString('token');
+  String? token =  prefs.getString('jwt');
   String initialRoute =
       token != null && !JwtDecoder.isExpired(token) ? '/home' : '/';
+  print("the initial route is : ");
+  print(initialRoute);
+  print(token);
   runApp(
       MyApp(token: prefs.getString('token') ?? '', initialRoute: initialRoute));
 }
@@ -57,8 +62,9 @@ class _MyAppState extends State<MyApp> {
           routes: {
             '/': (context) => const EntryPoint(),
             '/login': (context) => const LoginScreen(),
-            '/choice': (context) => const Placeholder(),
+            '/choice': (context) => const ChoiceScreen(),
             '/home': (context) => const HomeScreen(),
+            '/admin': (context) => const AdminScreen(),
             // '/register': (context) => const RegistrationScreen(),
             // '/admin': (context) => const AdminScreen(),
             // '/profile': (context) => const ProfileScreen(),

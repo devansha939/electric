@@ -30,13 +30,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextStyle(color: Colors.white, fontSize: 25)),
           ),
 
-          ListTile(
-            title: const Text('Clear Dues'),
-            onTap: () {
-              // Handle navigation or state update
-              Navigator.pop(context);
-            },
-          ),
+          // ListTile(
+          //   title: const Text('Clear Dues'),
+          //   onTap: () {
+          //     // Handle navigation or state update
+          //     Navigator.pop(context);
+          //   },
+          // ),
           ListTile(
             title: const Text('History'),
             onTap: () {

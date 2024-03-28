@@ -35,4 +35,24 @@ class BillData {
     required this.netPayable,
     required this.dateOfIssue,
   });
+factory BillData.fromJson(Map<String, dynamic> json) {
+    return BillData(
+        consumerName: json['consumerName'],
+        houseNumber: json['houseNumber'],
+        meterNumber: json['meterNumber'],
+        type: json['type'],
+        startDate: DateTime.parse(json['startDate']),
+        endDate: DateTime.parse(json['endDate']),
+        numberOfDays: json['numberOfDays'],
+        previousReading: json['previousReading'],
+        currentReading: json['currentReading'],
+        totalUnitsConsumed: json['totalUnitsConsumed'],
+        energyCharge: json['energyCharge'],
+        meterRent: json['meterRent'],
+        gst: json['gst'],
+        totalAmount: json['totalAmount'],
+        netPayable: json['netPayable'],
+        dateOfIssue: DateTime.parse(json['dateOfIssue']),
+    );
+}
 }

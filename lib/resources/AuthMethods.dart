@@ -1,5 +1,6 @@
 import "dart:convert";
 
+import 'package:electric/models/billData.dart';
 import 'package:electric/models/user.dart';
 import "package:flutter/material.dart";
 import 'package:http/http.dart' as http;
@@ -30,11 +31,15 @@ class AuthMethods {
           }),
         );
         Map<String, dynamic> responseData = jsonDecode(response.body);
+        print(responseData['data'].runtimeType);
+        List<BillData> billDataList = responseData['data'].map<BillData>((data) => BillData.fromJson(data)).toList();
+        print(billDataList.runtimeType);
+        print(billDataList);
         model.User user = model.User(
           email: responseData['email'],
           houseNumber: responseData['houseNumber'],
           userType: responseData['userType'],
-          data: responseData['data'],
+          data: billDataList,
           id: responseData['_id'],
         );
 
@@ -54,7 +59,7 @@ class AuthMethods {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        "email": "2021eeb1161@iitrpr.ac.in"
+        "email": email,
       }),
     );
     print(response.body);
@@ -91,8 +96,10 @@ class AuthMethods {
         'otp': otp,
       }),
     );
+    print(response.body);
     if (response.statusCode == 200) {
       Map<String, dynamic> responseData = jsonDecode(response.body);
+      print(responseData);
 
       return responseData;
     } else {

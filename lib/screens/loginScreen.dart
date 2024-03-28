@@ -96,11 +96,19 @@ bool emailValid() {
           .submitOtp(_emailController.text, _otpController.text);
       // store in shared preferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('jwt', responseData['token']);
-      prefs.setString('email', responseData['email']);
-      prefs.setString('id', responseData['id']);
-      prefs.setString('userType', responseData['userType']);
-      Provider.refreshUser(false);
+      print("we are at the login screen printing: ");
+      print(responseData['token']);
+      print(responseData['email']);
+      print(responseData['userId']);
+      print(responseData['userType']);
+       
+      await prefs.setString('jwt', responseData['token']);
+      await prefs.setString('email', responseData['email']);
+      await prefs.setString('id', responseData['userId']);
+      await prefs.setString('userType', responseData['userType']);
+      await Provider.refreshUser(false);
+      // get the string jwt stored and print it to check:
+    Navigator.pushNamed(context, '/home');
     } catch (e) {
       showSnackBar(context, e.toString());
     }
