@@ -75,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isLoading1 = false;
       });
+      print("the otp could not be sent");
       return false;
     }
   }

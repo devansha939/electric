@@ -67,7 +67,7 @@ class AuthMethods {
 
       return "code sent";
     } else {
-      throw Exception('Failed to request OTP');
+      return 'Failed to request OTP';
     }
   }
 
