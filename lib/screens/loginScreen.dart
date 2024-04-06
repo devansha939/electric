@@ -109,7 +109,7 @@ bool emailValid() {
       await prefs.setString('userType', responseData['userType']);
       await Provider.refreshUser(false);
       // get the string jwt stored and print it to check:
-    Navigator.pushNamed(context, '/home');
+    Navigator.pushNamed(context, responseData['userType']=='admin'?'/choice':'/home');
     } catch (e) {
       showSnackBar(context, e.toString());
     }
@@ -126,164 +126,140 @@ bool emailValid() {
       borderSide: Divider.createBorderSide(context),
     );
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: FloatingBubbles.alwaysRepeating(
-              noOfBubbles: 30,
-              colorsOfBubbles: const [
-                Colors.white,
-                Colors.red,
-              ],
-              sizeFactor: 0.1,
-              opacity: 60,
-              speed: BubbleSpeed.slow,
-              paintingStyle: PaintingStyle.fill,
-              shape: BubbleShape.circle,
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/log.jpeg'),
+            fit: BoxFit.cover,
           ),
-          Center(
-            child: Container(
-              width: MediaQuery.of(context).size.width *
-                  0.36, // Set the width to   36% of the screen width
-              height: MediaQuery.of(context).size.height *
-                  0.8, // Set the height to 60% of the screen height
-              padding: const EdgeInsets.all(
-                  20.0), // Increase padding to make the box smaller
-              decoration: BoxDecoration(
-                color: Colors.white
-                    .withOpacity(0.6), // Use semi-transparent white for the box
-                borderRadius: BorderRadius.circular(10.0), // Rounded corners
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.7),
-                    blurRadius: 10.0,
-                    spreadRadius: 2.0,
-                    offset: const Offset(0, 1),
+        ),
+        child: Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.36,
+            height: MediaQuery.of(context).size.height * 0.8,
+            padding: const EdgeInsets.all(20.0),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.6),
+              borderRadius: BorderRadius.circular(10.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.7),
+                  blurRadius: 10.0,
+                  spreadRadius: 2.0,
+                  offset: const Offset(0, 1),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 50),
+                  const Text(
+                    'Login',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 50), // Add space at the top
-
-                    const Text(
-                      'Login',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black, // Use black color for the text
+                  const SizedBox(height: 30),
+                  FractionallySizedBox(
+                    child: TextField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        hintText: "Enter Email",
+                        prefixIcon: const Icon(Icons.email),
+                        border: inputBorder,
                       ),
+                      keyboardType: TextInputType.emailAddress,
                     ),
-
-                    const SizedBox(height: 30),
-                    FractionallySizedBox(
-                      child: TextField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          hintText: "Enter Email",
-                          prefixIcon: const Icon(Icons.email),
-                          border: inputBorder,
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    ElevatedButton(
-                      onPressed: _isLoading1
-                          ? null
-                          : () async {
-                              // Disable button when loading
-                              setState(() {
-                                _isLoading1 = true;
-                              });
-                              if (emailValid()) {
-                                bool otpResult = await sendOtp();
-                                if (otpResult) {
-                                  setState(() {
-                                    otpSent = true;
-                                  });
-                                  resetTimer();
-                                  startTimer();
-                                  showSnackBar(context,
-                                      "OTP sent to ${_emailController.text}");
-                                } else {
-                                  showSnackBar(context,
-                                      "Please enter a valid email address");
-                                }
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _isLoading1
+                        ? null
+                        : () async {
+                            setState(() {
+                              _isLoading1 = true;
+                            });
+                            if (emailValid()) {
+                              bool otpResult = await sendOtp();
+                              if (otpResult) {
+                                setState(() {
+                                  otpSent = true;
+                                });
+                                resetTimer();
+                                startTimer();
+                                showSnackBar(context,
+                                    "OTP sent to ${_emailController.text}");
                               } else {
                                 showSnackBar(context,
                                     "Please enter a valid email address");
                               }
-                              setState(() {
-                                _isLoading1 = false;
-                              });
+                            } else {
+                              showSnackBar(context,
+                                  "Please enter a valid email address");
+                            }
+                            setState(() {
+                              _isLoading1 = false;
+                            });
+                          },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.black,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: _isLoading1
+                        ? CircularProgressIndicator()
+                        : Text("Request OTP"),
+                  ),
+                  const SizedBox(height: 10),
+                  if (otpSent) ...[
+                    SizedBox(height: 20),
+                    Text(
+                      "OTP will expire in $_start seconds",
+                      style: TextStyle(color: Colors.red[900]),
+                    ),
+                  ],
+                  if (otpSent) ...[
+                    SizedBox(height: 20),
+                    TField(
+                      hText: "Enter OTP",
+                      controller: _otpController,
+                      preIcon: Icon(Icons.lock_outline),
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _isLoading2
+                          ? null
+                          : () {
+                              next(userProvider);
                             },
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.black,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 50, vertical: 15), // Button padding
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              30), // Rounded corners for the button
+                          borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      child: _isLoading1
+                      child: _isLoading2
                           ? CircularProgressIndicator()
-                          : Text("Request OTP"),
+                          : Text("Submit OTP"),
                     ),
-                    const SizedBox(height: 10),
-
-                    // Add some space between the button and the link
-                    if (otpSent) ...[
-                      SizedBox(height: 20),
-                      Text(
-                        "OTP will expire in $_start seconds",
-                        style: TextStyle(
-                            color:
-                                Colors.red[900]), // Set the color to dark red
-                      ),
-                    ],
-                    if (otpSent) ...[
-                      // Only show OTP field if OTP has been sent
-                      SizedBox(height: 20),
-                      TField(
-                        hText: "Enter OTP",
-                        controller: _otpController,
-                        preIcon: Icon(Icons.lock_outline), // Icon for OTP field
-                      ),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: _isLoading2
-                            ? null
-                            : () {
-                                next(userProvider);
-                              },
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 50, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        child: _isLoading2
-                            ? CircularProgressIndicator()
-                            : Text("Submit OTP"),
-                      ),
-                    ],
                   ],
-                ),
+                ],
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

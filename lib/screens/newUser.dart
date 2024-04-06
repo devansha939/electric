@@ -75,7 +75,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                             createUser(
                               emailController.text,
                               houseNumberController.text,
-                              userType,
+                              userType.toLowerCase(),
                             ).then((responseData) {
                               if (responseData['status'] == 'success') {
                                 showSnackBar(

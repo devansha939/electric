@@ -57,6 +57,7 @@ class _AdminScreenState extends State<AdminScreen> {
             houseNumber: user['houseNumber'],
             email: user['email'],
             userId: user['_id'],
+            lastAdded: user['lastAddition'] != null ? user['lastAddition'] : null,
           );
         },
       ),

@@ -1,4 +1,5 @@
 import 'package:electric/providers/userProvider.dart';
+import 'package:electric/screens/add_Data.dart';
 import 'package:electric/screens/adminScreen.dart';
 import 'package:electric/screens/choice.dart';
 import 'package:electric/screens/entryPoint.dart';
@@ -15,7 +16,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? token =  prefs.getString('jwt');
+  String? token = prefs.getString('jwt');
   String? userType = prefs.getString('userType');
   String initialRoute =
       token != null && !JwtDecoder.isExpired(token) ? '/home' : '/';
@@ -68,9 +69,18 @@ class _MyAppState extends State<MyApp> {
             '/login': (context) => const LoginScreen(),
             '/choice': (context) => const ChoiceScreen(),
             '/home': (context) => const HomeScreen(),
-            '/admin': (context) =>  AdminScreen(),
-            '/admin/new': (context) => const AddUserScreen(), 
+            '/admin': (context) => AdminScreen(),
+            '/admin/new': (context) => const AddUserScreen(),
             '/admin/bill/:id': (context) => DataScreen(),
+            '/admin/addBill': (context) {
+              final Map<String, String> params = ModalRoute.of(context)!
+                  .settings
+                  .arguments as Map<String, String>;
+              final String id = params['id']!;
+              final String houseNumber = params['houseNumber']!;
+              return AddDataScreen(userId: id, houseNumber:houseNumber ,);
+            },
+            // 'admin/more': (context) => const TestScreen(),
             // '/profile': (context) => const ProfileScreen(),
           },
           // home: const LoginScreen(),

@@ -7,6 +7,7 @@ class HouseCard extends StatefulWidget {
   final String houseNumber;
   final String email;
   final String userId;
+  final String? lastAdded;
 
   const HouseCard({
     Key? key,
@@ -14,6 +15,7 @@ class HouseCard extends StatefulWidget {
     required this.houseNumber,
     required this.email,
     required this.userId,
+    this.lastAdded,
   }) : super(key: key);
 
   @override
@@ -21,7 +23,10 @@ class HouseCard extends StatefulWidget {
 }
 
 class _HouseCardState extends State<HouseCard> {
-  @override
+  void addUserData(BuildContext context) {
+     Navigator.pushNamed(context, '/admin/addBill', arguments: {'id': widget.userId, 'houseNumber': widget.houseNumber});
+}
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -34,10 +39,21 @@ class _HouseCardState extends State<HouseCard> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: ListTile(
-              title: Text(
-                'House Number: ${widget.houseNumber}',
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              title: Row(
+                children: [
+                  Text(
+                    'House Number: ${widget.houseNumber}',
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                  Expanded(child: Container()),
+                  Text(
+                    widget.lastAdded != null
+                        ? 'Last Added: ${widget.lastAdded}'
+                        : 'No data',
+                    style: const TextStyle(fontSize: 14),
+                  )
+                ],
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +88,9 @@ class _HouseCardState extends State<HouseCard> {
                         label: const Text('More'),
                       ),
                       ElevatedButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          addUserData(context);
+                        },
                         icon: const Icon(Icons.add),
                         label: const Text('Add New Data'),
                       ),

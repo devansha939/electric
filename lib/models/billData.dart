@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 class BillData {
   String consumerName;
   String houseNumber;
@@ -35,6 +37,27 @@ class BillData {
     required this.netPayable,
     required this.dateOfIssue,
   });
+
+  Map<String,dynamic> toJson(BillData data){
+    return {
+        'consumerName': data.consumerName,
+        'houseNumber': data.houseNumber,
+        'meterNumber': data.meterNumber,
+        'type': data.type,
+        'startDate': data.startDate,
+        'endDate': data.endDate,
+        'numberOfDays': data.numberOfDays,
+        'previousReading': data.previousReading,
+        'currentReading': data.currentReading,
+        'totalUnitsConsumed': data.totalUnitsConsumed,
+        'energyCharge': data.energyCharge,
+        'meterRent': data.meterRent,
+        'gst': data.gst,
+        'totalAmount': data.totalAmount,
+        'netPayable': data.netPayable,
+        'dateOfIssue': data.dateOfIssue,
+    };
+}
 factory BillData.fromJson(Map<String, dynamic> json) {
     return BillData(
         consumerName: json['consumerName'],
