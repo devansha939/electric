@@ -44,8 +44,8 @@ class BillData {
         'houseNumber': data.houseNumber,
         'meterNumber': data.meterNumber,
         'type': data.type,
-        'startDate': data.startDate,
-        'endDate': data.endDate,
+        'startDate': data.startDate.toIso8601String(),
+        'endDate': data.endDate.toIso8601String(),
         'numberOfDays': data.numberOfDays,
         'previousReading': data.previousReading,
         'currentReading': data.currentReading,
@@ -55,7 +55,7 @@ class BillData {
         'gst': data.gst,
         'totalAmount': data.totalAmount,
         'netPayable': data.netPayable,
-        'dateOfIssue': data.dateOfIssue,
+        'dateOfIssue': data.dateOfIssue.toIso8601String(),
     };
 }
 factory BillData.fromJson(Map<String, dynamic> json) {

@@ -71,7 +71,13 @@ class _MyAppState extends State<MyApp> {
             '/home': (context) => const HomeScreen(),
             '/admin': (context) => AdminScreen(),
             '/admin/new': (context) => const AddUserScreen(),
-            '/admin/bill/:id': (context) => DataScreen(),
+            '/admin/bills': (context){
+              final Map<String, String> params = ModalRoute.of(context)!
+                  .settings
+                  .arguments as Map<String, String>;
+              final String id = params['id']!;
+              return DataScreen(userId:  id);
+            },
             '/admin/addBill': (context) {
               final Map<String, String> params = ModalRoute.of(context)!
                   .settings

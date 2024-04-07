@@ -26,6 +26,10 @@ class _HouseCardState extends State<HouseCard> {
   void addUserData(BuildContext context) {
      Navigator.pushNamed(context, '/admin/addBill', arguments: {'id': widget.userId, 'houseNumber': widget.houseNumber});
 }
+  void more(BuildContext context) {
+     Navigator.pushNamed(context, '/admin/bills', arguments: {'id': widget.userId});
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +80,14 @@ class _HouseCardState extends State<HouseCard> {
                       ElevatedButton.icon(
                         onPressed: () {
                           // On pressed route it to '/User/bills
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DataScreen(),
-                              settings: RouteSettings(arguments: widget.userId),
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => DataScreen(),
+                          //     settings: RouteSettings(arguments: widget.userId),
+                          //   ),
+                          // );
+                          more(context);
                         },
                         icon: const Icon(Icons.more_horiz),
                         label: const Text('More'),

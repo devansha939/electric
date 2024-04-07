@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:electric/models/billData.dart';
+import 'package:electric/widgets/snackBar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -61,12 +62,15 @@ Future<Map<String, dynamic>> getUserData(String id) async {
 }
 
 Future addUserData(String id, BillData data) async {
+
+  print("the data is as follows: ");
+  print(data.toJson(data));
   try {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? currentJwt = prefs.getString('jwt');
     
     final response = await http.post(
-      Uri.parse('http://localhost:3000/api/users/addData'),
+      Uri.parse('http://localhost:3000/api/users/addbill'),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $currentJwt',
@@ -78,10 +82,15 @@ Future addUserData(String id, BillData data) async {
     );
     
     Map<String, dynamic> responseData = jsonDecode(response.body);
-    return responseData['success'];
+    print("the response data is as follows: ");
+    print(responseData);
+    print(response.statusCode);
+    return response.statusCode.toString();
   } catch (e) {
     print("Error adding user data: $e");
-    throw e;
+    return e;
+    // throw e;
+
   }
 }
 

@@ -1,5 +1,5 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart'; // Assuming using fl_chart for demonstration
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -9,145 +9,85 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Example data for the chart
-  final List<BarChartGroupData> _barGroups = [
-    BarChartGroupData(x: 0, barRods: [BarChartRodData(fromY: 0, toY: 30)]),
-    BarChartGroupData(x: 1, barRods: [BarChartRodData(fromY: 0, toY: 60)]),
-    BarChartGroupData(x: 2, barRods: [BarChartRodData(fromY: 0, toY: 90)]),
-    // Add more data points here
+  late String _selectedMonth;
+  late String _selectedYear;
+
+  final List<String> _months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
-  Widget _buildDrawer() {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          Container(
-            height: 100,
-            color: Colors.blue.shade900,
-            alignment: Alignment.center,
-            child: const Text('Menu',
-                style: TextStyle(color: Colors.white, fontSize: 25)),
-          ),
+  final List<String> _years = [
+    '2022', '2023', '2024', '2025' // Add more years if needed
+  ];
 
-          // ListTile(
-          //   title: const Text('Clear Dues'),
-          //   onTap: () {
-          //     // Handle navigation or state update
-          //     Navigator.pop(context);
-          //   },
-          // ),
-          ListTile(
-            title: const Text('History'),
-            onTap: () {
-              // Handle navigation or state update
-              Navigator.pop(context);
-            },
-          ),
-          // Add more items here
-          ListTile(
-            title: const Text('Settings'),
-            onTap: () {
-              // Handle navigation or state update
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
+    _selectedMonth = _months[DateTime.now().month - 1];
+    _selectedYear = DateTime.now().year.toString();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: const Text('Dashboard'),
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed('/profile');
+              // Add functionality for profile button
             },
             icon: const Icon(Icons.person),
           ),
         ],
       ),
-      body: Row(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Drawer is always visible
-          Container(
-            width: 250, // Adjust the width as needed
-            child: _buildDrawer(), // Call the drawer here
-          ),
-          Expanded(
-            child: Column(
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Container(
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade100,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(child: SizedBox()), // Add space at the start
-                        Text(
-                          'Current Due:',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue.shade900,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          textAlign: TextAlign.center,
-                          '1 \$BTC', // Example current due, replace with actual data
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red.shade700,
-                          ),
-                        ),
-                        Expanded(child: SizedBox())
-                      ],
-                    ),
-                  ),
+                DropdownButton<String>(
+                  value: _selectedMonth,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedMonth = newValue!;
+                    });
+                  },
+                  items: _months.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
                 ),
-                SizedBox(
-                  height: 300, // Set the height of the chart
-                  width:
-                      double.infinity, // Adjusted to take the remaining space
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: LineChart(
-  LineChartData(
-    lineBarsData: [
-      LineChartBarData(
-        spots: [
-          FlSpot(0, 30),
-          FlSpot(1, 60),
-          FlSpot(2, 90),
-          // Add more data points here
-        ],
-        isCurved: true, // Set to true for curved lines
-        // colors: [Colors.blue], // Customize line color
-        barWidth: 4, // Adjust line width
-        isStrokeCapRound: true, // Round line ends
-      ),
-    ],
-    // Customize your line chart appearance here
-  ),
-),
-                  ),
+                SizedBox(width: 20), // Added space between the dropdowns
+                DropdownButton<String>(
+                  value: _selectedYear,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedYear = newValue!;
+                    });
+                  },
+                  items: _years.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
                 ),
               ],
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add functionality for settings button
+        },
+        child: Icon(Icons.settings),
       ),
     );
   }
