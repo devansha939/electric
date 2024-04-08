@@ -123,18 +123,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child:
-
-          // heading saying adding new bill to house number ${widget.houseNumber}
-          // SizedBox(
-          //   height: 20,
-          //   child: Text(
-          //     'Adding new bill to house number ${widget.houseNumber}',
-          //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          //     softWrap: true, // Add this line to allow text to wrap
-          //   ),
-          // ),
-          Padding(
+      child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: ListView(
           children: [

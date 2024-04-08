@@ -2,6 +2,7 @@ import 'package:electric/providers/userProvider.dart';
 import 'package:electric/screens/add_Data.dart';
 import 'package:electric/screens/adminScreen.dart';
 import 'package:electric/screens/choice.dart';
+import 'package:electric/screens/editData.dart';
 import 'package:electric/screens/entryPoint.dart';
 import 'package:electric/screens/homeScreen.dart';
 import 'package:electric/screens/loginScreen.dart';
@@ -85,6 +86,13 @@ class _MyAppState extends State<MyApp> {
               final String id = params['id']!;
               final String houseNumber = params['houseNumber']!;
               return AddDataScreen(userId: id, houseNumber:houseNumber ,);
+            },
+            '/admin/editData': (context) {
+              final Map<String, dynamic> params = ModalRoute.of(context)!
+                  .settings
+                  .arguments as Map<String, dynamic>;
+              final data = params['data'];
+              return EditScreen(data: data,);
             },
             // 'admin/more': (context) => const TestScreen(),
             // '/profile': (context) => const ProfileScreen(),

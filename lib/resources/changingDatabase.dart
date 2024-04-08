@@ -94,3 +94,30 @@ Future addUserData(String id, BillData data) async {
   }
 }
 
+Future updateUserData(String id, BillData data) async {
+  try {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? currentJwt = prefs.getString('jwt');
+    
+    final response = await http.post(
+      Uri.parse('http://localhost:3000/api/users/updatebill'),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $currentJwt',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'id': id,
+        'data': data.toJson(data),
+      }),
+    );
+    
+    Map<String, dynamic> responseData = jsonDecode(response.body);
+    print("the response data is as follows: ");
+    print(responseData);
+    return responseData;
+  } catch (e) {
+    print("Error updating user data: $e");
+    throw e;
+  }
+}
+
