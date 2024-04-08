@@ -38,13 +38,18 @@ class _DataScreenState extends State<DataScreen> {
               // : Text(
               //     'Data length: ${userData['data'].length}',
               //     style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-              // )
+              // )DateTime.parse
               : ListView.builder(
                   itemCount: userData['data'].length,
                   itemBuilder: (context, index) {
+                    var sortedData = List.from(userData['data'])
+                      ..sort((a, b) => DateTime.parse(b['dateOfIssue'])
+                          .compareTo(DateTime.parse(a['dateOfIssue'])));
+
+                    // var sortedData = userData['data']..sort((a, b) => DateTime.parse(b['dateOfIssue']).compareTo(DateTime.parse(a['dateOfIssue'])));
                     return billCardAdmin(
-                        jsonData:
-                            Map<String, dynamic>.from(userData['data'][index]));
+                      jsonData: Map<String, dynamic>.from(sortedData[index]),
+                    );
                   },
                 ),
         ),

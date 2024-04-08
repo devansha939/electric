@@ -15,17 +15,30 @@ class billCardAdmin extends StatefulWidget {
 
 class _billCardAdminState extends State<billCardAdmin> {
   @override
-  Widget build(BuildContext context) {
-    return Text("bell");
-    // ListView.builder(
-    //     itemCount: widget.jsonData.length,
-    //     itemBuilder: (context, index) {
-    //       // String key = widget.jsonData.keys.elementAt(index);
-    //       // dynamic value = widget.jsonData[key];
-    //       return (Text("Hello"));
-    //       //  ListTile(
-    //       // title: Text(key),
-    //       // subtitle: Text(value.toString()),
-    //     });
-  }
+@override
+Widget build(BuildContext context) {
+  return Column(
+    children: [
+      SizedBox(height: 10),
+      Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Date of Issue: ${widget.jsonData['dateOfIssue']}'),
+            Text('Consumer Name: ${widget.jsonData['consumerName']}'),
+            Text('Net Payable: ${widget.jsonData['netPayable']}'),
+            Text('End Date: ${widget.jsonData['endDate']}'),
+            
+          ],
+        ),
+      ),
+      SizedBox(height: 10),
+    ],
+  );
+}
 }
