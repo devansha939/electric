@@ -24,12 +24,19 @@ class HouseCard extends StatefulWidget {
 
 class _HouseCardState extends State<HouseCard> {
   void addUserData(BuildContext context) {
-     Navigator.pushNamed(context, '/admin/addBill', arguments: {'id': widget.userId, 'houseNumber': widget.houseNumber});
-}
-  void more(BuildContext context) {
-     Navigator.pushNamed(context, '/admin/bills', arguments: {'id': widget.userId});
-}
+    Navigator.pushNamed(context, '/admin/addBill',
+        arguments: {'id': widget.userId, 'houseNumber': widget.houseNumber});
+  }
 
+  void previousBills(BuildContext context) {
+    Navigator.pushNamed(context, '/admin/bills',
+        arguments: {'id': widget.userId});
+  }
+
+  void editUserData(BuildContext context) {
+    Navigator.pushNamed(context, '/admin/editUser',
+        arguments: {'id': widget.userId});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +55,14 @@ class _HouseCardState extends State<HouseCard> {
                   Text(
                     'House Number: ${widget.houseNumber}',
                     style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w600),
+                        fontSize: 22, fontWeight: FontWeight.w600),
                   ),
                   Expanded(child: Container()),
                   Text(
                     widget.lastAdded != null
                         ? 'Last Added: ${widget.lastAdded}'
                         : 'No data',
-                    style: const TextStyle(fontSize: 14),
+                    style: const TextStyle(fontSize: 16),
                   )
                 ],
               ),
@@ -63,8 +70,14 @@ class _HouseCardState extends State<HouseCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 8),
-                  Text('Index: ${widget.indexNumber}'),
-                  Text('Email: ${widget.email}'),
+                  Text(
+                    'Index: ${widget.indexNumber}',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Text(
+                    'Email: ${widget.email}',
+                    style: TextStyle(fontSize: 18),
+                  ),
                   const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -87,10 +100,17 @@ class _HouseCardState extends State<HouseCard> {
                           //     settings: RouteSettings(arguments: widget.userId),
                           //   ),
                           // );
-                          more(context);
+                          previousBills(context);
                         },
                         icon: const Icon(Icons.more_horiz),
-                        label: const Text('More'),
+                        label: const Text('Previous Bills'),
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          editUserData(context);
+                        },
+                        icon: const Icon(Icons.edit),
+                        label: const Text('Edit User Data'),
                       ),
                       ElevatedButton.icon(
                         onPressed: () {
