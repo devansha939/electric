@@ -1,13 +1,13 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-// ignore: unused_import
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ChoiceScreen extends StatefulWidget {
-  const ChoiceScreen({super.key, superKey, Key? customKey});
+  const ChoiceScreen({Key? key}) : super(key: key);
+
   @override
-  // ignore: library_private_types_in_public_api
   _ChoiceScreenState createState() => _ChoiceScreenState();
 }
 
@@ -15,96 +15,66 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade900, // Gives a dark theme background
       appBar: AppBar(
-        backgroundColor: Colors.transparent, // Make app bar transparent
-        elevation: 0, // Remove app bar elevation
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(
-              'https://images.pexels.com/photos/4862892/pexels-photo-4862892.jpeg?cs=srgb&dl=pexels-karolina-grabowska-4862892.jpg&fm=jpg',
-            ),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(0.5),
-              BlendMode.darken,
-            ),
-          ),
+        title: Text(
+          'Welcome!',
+          style: GoogleFonts.lato(color: Colors.white, fontSize: 28), // Using Google Fonts for better typography
         ),
-        child: Center(
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            margin: const EdgeInsets.symmetric(horizontal: 50),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.5), // White box with opacity
-              borderRadius: BorderRadius.circular(10), // Rounded corners
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10), // Rounded corners for inner content
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), // Add blur effect
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Text(
-                        'Choose User Type',
-                        style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/home');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.black,
-                        elevation: 8,
-                        shadowColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                      ),
-                      child: const Text(
-                        'Consumer',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/admin');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.black,
-                        elevation: 8,
-                        shadowColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                      ),
-                      child: const Text(
-                        'Admin',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                  ],
-                ),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: Center(
+        child: Container(
+          width: 600, // Set a fixed width for larger screens
+          padding: const EdgeInsets.all(20),
+          margin: const EdgeInsets.all(50),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.85),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.25),
+                spreadRadius: 1,
+                blurRadius: 20,
+                offset: Offset(0, 8), // changes position of shadow
               ),
-            ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                'Choose User Type',
+                style: GoogleFonts.lato(fontSize: 30, color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 40),
+              _buildChoiceButton(title: 'Consumer', route: '/home'),
+              const SizedBox(height: 20),
+              _buildChoiceButton(title: 'Admin', route: '/admin'),
+            ],
           ),
         ),
       ),
     );
   }
+
+  Widget _buildChoiceButton({required String title, required String route}) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.pushNamed(context, route);
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white, backgroundColor: Colors.teal,
+        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+        textStyle: GoogleFonts.lato(fontSize: 20, fontWeight: FontWeight.bold),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+      ),
+      child: Text(title),
+    );
+  }
 }
+

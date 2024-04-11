@@ -1,83 +1,86 @@
-import "package:electric/screens/editData.dart";
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
+import 'package:electric/screens/editData.dart';
 
-// Admin side individual bill card
-
-class billCardAdmin extends StatefulWidget {
+class BillCardAdmin extends StatefulWidget {
   final Map<String, dynamic> jsonData;
-  billCardAdmin({
+  final String userId;
+
+  const BillCardAdmin({
     Key? key,
+    required this.userId,
     required this.jsonData,
   }) : super(key: key);
 
   @override
-  State<billCardAdmin> createState() => _billCardAdminState();
+  State<BillCardAdmin> createState() => _BillCardAdminState();
 }
 
-class _billCardAdminState extends State<billCardAdmin> {
+class _BillCardAdminState extends State<BillCardAdmin> {
+  void edit(BuildContext context) {
+    Navigator.pushNamed(context, '/editData', arguments: {'data': widget.jsonData});
+  }
 
-  void edit(BuildContext context){
-  Navigator.pushNamed(context, '/editData', arguments: {'data': widget.jsonData}); 
-}
-@override
-Widget build(BuildContext context) {
-  return Column(
-  children: [
-    SizedBox(height: 10),
-    Container(
-      padding: EdgeInsets.all(20), // Increased padding for better spacing
-      decoration: BoxDecoration(
-        color: Colors.white, // Added a background color for contrast
-        border: Border.all(color: Colors.grey.shade300), // Lighter grey border
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade200, // Soft shadow for depth
-            blurRadius: 5,
-            offset: Offset(0, 3), // Slight shadow offset
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 10),
+        Container(
+          padding: EdgeInsets.all(16), // Optimized padding
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.blueGrey.shade100),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blueGrey.shade50,
+                blurRadius: 8,
+                offset: Offset(0, 2),
+              ),
+            ],
+            borderRadius: BorderRadius.circular(12), // Smoothed corners
           ),
-        ],
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Date of Issue: ${widget.jsonData['dateOfIssue']}',
-            style: TextStyle(fontSize: 16), // Larger font size for readability
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Date of Issue: ${widget.jsonData['dateOfIssue']}',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), // Enhanced style
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Consumer Name: ${widget.jsonData['consumerName']}',
+                style: TextStyle(fontSize: 18),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Net Payable: ${widget.jsonData['netPayable']}',
+                style: TextStyle(fontSize: 18),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'End Date: ${widget.jsonData['endDate']}',
+                style: TextStyle(fontSize: 18),
+              ),
+              SizedBox(height: 12),
+              Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor, // Use the theme's primary color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  onPressed: ()=> Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => EditScreen(data: widget.jsonData, userId: widget.userId,))),
+                    child: Text('Edit', style: TextStyle(color: Colors.white)), // Corrected fontColor to color
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 5), // Added space between text lines
-          Text(
-            'Consumer Name: ${widget.jsonData['consumerName']}',
-            style: TextStyle(fontSize: 16),
-          ),
-          SizedBox(height: 5),
-          Text(
-            'Net Payable: ${widget.jsonData['netPayable']}',
-            style: TextStyle(fontSize: 16),
-          ),
-          SizedBox(height: 5),
-          Text(
-            'End Date: ${widget.jsonData['endDate']}',
-            style: TextStyle(fontSize: 16),
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: IconButton(
-              icon: Icon(Icons.edit), // Pencil icon can be 'Icons.edit'
-              onPressed: () {
-                // Navigate to the new page here
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => EditScreen(data: widget.jsonData)), 
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    ),
-    SizedBox(height: 10),
-  ],
-);
-
-}
+        ),
+        SizedBox(height: 10),
+      ],
+    );
+  }
 }

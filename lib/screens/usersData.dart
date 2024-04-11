@@ -29,8 +29,23 @@ class _DataScreenState extends State<DataScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        
         appBar: AppBar(
           title: const Text('User Data'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () {
+                fetchData();
+              },
+            ),
+          ],
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )
         ),
         body: Center(
           child: userData == null
@@ -47,7 +62,8 @@ class _DataScreenState extends State<DataScreen> {
                           .compareTo(DateTime.parse(a['dateOfIssue'])));
 
                     // var sortedData = userData['data']..sort((a, b) => DateTime.parse(b['dateOfIssue']).compareTo(DateTime.parse(a['dateOfIssue'])));
-                    return billCardAdmin(
+                    return BillCardAdmin(
+                      userId: widget.userId,
                       jsonData: Map<String, dynamic>.from(sortedData[index]),
                     );
                   },

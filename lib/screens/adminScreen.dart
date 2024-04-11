@@ -6,7 +6,7 @@ import "package:http/http.dart" as http;
 import "package:shared_preferences/shared_preferences.dart";
 
 class AdminScreen extends StatefulWidget {
-   AdminScreen({super.key});
+  AdminScreen({super.key});
 
   @override
   State<AdminScreen> createState() => _AdminScreenState();
@@ -14,6 +14,8 @@ class AdminScreen extends StatefulWidget {
 
 class _AdminScreenState extends State<AdminScreen> {
   List<dynamic> userData = [];
+  bool isLoading = true;
+  String errorMessage = '';
 
   @override
   void initState() {
@@ -22,23 +24,40 @@ class _AdminScreenState extends State<AdminScreen> {
   }
 
   Future<void> fetchUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? jwtToken = prefs.getString('jwt');
+    setState(() {
+      isLoading = true;
+      errorMessage = '';
+    });
 
-    final response = await http.get(
-      Uri.parse('http://localhost:3000/api/users/Users'),
-      headers: {
-        'Authorization': 'Bearer $jwtToken',
-      },
-    );
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? jwtToken = prefs.getString('jwt');
 
-    if (response.statusCode == 200) {
-      List<dynamic> data = jsonDecode(response.body);
+      final response = await http.get(
+        Uri.parse('http://localhost:3000/api/users/Users'),
+        headers: {
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = jsonDecode(response.body);
+        setState(() {
+          userData = data;
+        });
+      } else {
+        setState(() {
+          errorMessage = 'Failed to fetch user data. Status code: ${response.statusCode}';
+        });
+      }
+    } catch (e) {
       setState(() {
-        userData = data;
+        errorMessage = 'Failed to fetch user data: $e';
       });
-    } else {
-      print('Failed to fetch user data');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -46,36 +65,41 @@ class _AdminScreenState extends State<AdminScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Data'),
+        title: Text('User Data', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.blueAccent,
+        elevation: 0,
       ),
-      body: ListView.builder(
-        itemCount: userData.length,
-        itemBuilder: (context, index) {
-          Map<String, dynamic> user = userData[index];
-          return HouseCard(
-            indexNumber: index,
-            houseNumber: user['houseNumber'],
-            email: user['email'],
-            userId: user['_id'],
-            lastAdded: user['lastAddition'] != null ? user['lastAddition'] : null,
-          );
-        },
-      ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : userData.isNotEmpty
+              ? ListView.builder(
+                  itemCount: userData.length,
+                  itemBuilder: (context, index) {
+                    Map<String, dynamic> user = userData[index];
+                    return HouseCard(
+                      indexNumber: index,
+                      houseNumber: user['houseNumber'],
+                      email: user['email'],
+                      userId: user['_id'],
+                      lastAdded: user['lastAddition'],
+                    );
+                  },
+                )
+              : Center(child: Text(errorMessage.isNotEmpty ? errorMessage : 'No user data available')),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-
-          // route to '/admin/new'
           Navigator.pushNamed(context, '/admin/new');
         },
+        icon: Icon(Icons.add),
         label: Text(
-          'Add New User',
+          'Add User',
           style: TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.bold,
           ),
         ),
+        backgroundColor: Colors.blueAccent,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
